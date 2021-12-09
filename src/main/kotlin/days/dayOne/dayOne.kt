@@ -43,7 +43,7 @@ fun partTwo(): Int {
 
         for(i in start..end) {
             try {
-                println("Reading line ${i.toString()}: ${readings[i].toString()}")
+                //println("Reading line ${i.toString()}: ${readings[i].toString()}")
                 lineSum += readings[i]
             } catch (e: Exception) {
                 //println("Line ${i.toString()} doesn't exist, stopping inner loop")
@@ -53,7 +53,7 @@ fun partTwo(): Int {
         }
 
         if(!except) {
-            println("LineSum: ${lineSum.toString()}")
+            //println("LineSum: ${lineSum.toString()}")
             hm.put(iter, lineSum)
             ++iter
             ++start
@@ -63,18 +63,17 @@ fun partTwo(): Int {
                 start = kick + 1
                 kick = start + 3
 
-                println("Setting start to: ${start.toString()}")
-                println("Setting kick to: ${kick.toString()}")
+                //println("Setting start to: ${start.toString()}")
+                //println("Setting kick to: ${kick.toString()}")
             }
         } else {
-            except = false
             hm.put(iter, lineSum)
             //println("Exiting loop - lineSum: ${lineSum.toString()} - start: ${start.toString()} - end: ${end.toString()}")
             break
         }
     }
 
-    println("HashMap: ${hm.values.toString()}\n")
+    //println("HashMap: ${hm.values.toString()}\n")
 
     var items = -1;
     var last = 0;
