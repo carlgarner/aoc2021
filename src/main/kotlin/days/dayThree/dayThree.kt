@@ -40,22 +40,61 @@ fun partOne(): Int {
 fun partTwo(): Int {
     var oxygen = ""
     var co2 = ""
-    var oxyList: MutableList<String> = ArrayList<String>()
-    var co2List: MutableList<String> = ArrayList<String>()
-    var (zeros, ones) = readings.partition { it.startsWith('0') }
+    var mostCommon = '0'
+    var leastCommon = '0'
+    var readingsClone = readings.toMutableList()
 
-    if(zeros.count() > ones.count()) {
-        oxyList.addAll(ones)
-        co2List.addAll(zeros)
-    } else {
-        oxyList.addAll(zeros)
-        co2List.addAll(ones)
+    run oxygen@ {
+        readings.first().toCharArray().forEachIndexed { i, c ->
+            var count = 0
+            readingsClone.forEach { count += if(it.toCharArray()[i] == '1') 1 else -1 }
+            mostCommon = if(count >= 0) '1' else '0'
+
+            //println("Most Common (${i}): ${mostCommon}")
+
+            readingsClone.toMutableList().forEach {
+                if(it[i] != mostCommon)
+                    readingsClone.remove(it)
+
+                if(readingsClone.size == 1) {
+                    //println("FINAL: ${readingsClone}")
+                    return@oxygen
+                }
+            }
+
+            //println("Lenght: ${readingsClone.size}")
+        }
     }
 
-    println("Zero count: ${zeros.count()}")
-    println("Ones count: ${ones.count()}")
+    oxygen = readingsClone.first()
+    readingsClone = readings.toMutableList()
 
+    run scrubber@ {
+        readings.first().toCharArray().forEachIndexed { i, c ->
+            var count = 0
+            readingsClone.forEach { count += if(it.toCharArray()[i] == '1') 1 else -1 }
+            leastCommon = if(count >= 0) '0' else '1'
 
+            //println("Least Common (${i}): ${leastCommon}")
 
-    return 0
+            readingsClone.toMutableList().forEach {
+                if(it[i] != leastCommon)
+                    readingsClone.remove(it)
+
+                if(readingsClone.size == 1) {
+                    //println("FINAL: ${readingsClone}")
+                    return@scrubber
+                }
+            }
+
+            //println("Lenght: ${readingsClone.size}")
+        }
+    }
+
+    co2 = readingsClone.first()
+
+    //println("Oxygen: ${oxygen} - (dec: ${oxygen.toInt(2)})")
+    //println("CO2: ${co2} - (dec: ${co2.toInt(2)})")
+
+    return oxygen.toInt(2) * co2.toInt(2)
 }
